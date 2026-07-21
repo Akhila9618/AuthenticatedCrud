@@ -1,0 +1,28 @@
+package com.example.demo.exception;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import com.example.demo.utility.ApiResponse;
+
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+//	@ExceptionHandler(MethodArgumentNotValidException.class)
+//	private ApiResponse<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+//		ApiResponse<Map<String,String>> response = new ApiResponse<>();
+//		Map<String, String> errors = new HashMap<>();
+//		ex.getBindingResult().getFieldErrors()
+//				.forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
+//		response.setMessage("Invalid Request");
+//		response.setStatus("failed");
+//		response.setData(errors);
+//		
+//		return response;
+//	}
+
+}

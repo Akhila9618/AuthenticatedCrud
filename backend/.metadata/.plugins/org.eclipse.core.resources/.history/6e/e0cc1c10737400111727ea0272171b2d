@@ -1,0 +1,27 @@
+package com.example.demo.model;
+
+import java.util.List;
+
+import com.example.demo.dto.Menu;
+
+import lombok.Data;
+
+@Data
+public class LoginResponse {
+
+    private Integer employeeId;
+
+    private String userName;
+
+    private String token;
+
+    private String role;
+    
+    private List<Menu> menusData;
+
+	public void setEmployeeId(Integer emplId) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

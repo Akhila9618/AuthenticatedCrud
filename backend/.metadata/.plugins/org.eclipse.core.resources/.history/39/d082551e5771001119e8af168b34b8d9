@@ -1,0 +1,87 @@
+package com.example.demo.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.model.EmployeeModel;
+import com.example.demo.repository.EmployeeRepository;
+import com.example.demo.utility.ApiResponse;
+
+@Service
+public class EmployeeService {
+	@Autowired
+	private EmployeeRepository employeeRepository;
+
+	public List<EmployeeModel> fetchAllEmployees() {
+		return employeeRepository.findAll();
+
+	}
+
+	public ApiResponse<EmployeeModel> saveEmployee(EmployeeModel newUser) {
+		ApiResponse<EmployeeModel> response = new ApiResponse<>();
+		try {
+			EmployeeModel newEmp = employeeRepository.save(newUser);
+			response.setStatus("success");
+			response.setMessage("User Data Saved Successfully");
+			response.setData(newEmp);
+
+		} catch (Exception e) {
+			response.setStatus("error");
+			response.setMessage("Error while saving" + e.getMessage());
+		}
+		return response;
+	}
+
+	public ApiResponse<EmployeeModel> fetchEmployee(EmployeeModel emp) {
+		ApiResponse<EmployeeModel> response = new ApiResponse<>();
+
+		try {
+			Optional<EmployeeModel> matchedEmp = employeeRepository.findById(emp.getEmplId());
+			if (matchedEmp.isPresent()) {
+				EmployeeModel existingEmp = matchedEmp.get();
+
+				existingEmp.setEmpName(emp.getEmpName());
+				existingEmp.setEmpSalary(emp.getEmpSalary());
+				existingEmp.setEmpAddress(emp.getEmpAddress());
+
+				EmployeeModel updatedEmp = employeeRepository.save(existingEmp);
+
+				response.setStatus("success");
+				response.setMessage("Updated Successfully");
+				response.setData(updatedEmp);
+			} else {
+				response.setStatus("success");
+				response.setMessage("Employee Not found with" + emp.getEmplId());				
+			}
+
+		} catch (Exception e) {
+			response.setMessage("Updated Successfully");
+			response.setStatus("success");
+		}
+		return response;
+
+	}
+
+	public ApiResponse<EmployeeModel> deleteEmpyloyee(Integer empId) {
+		ApiResponse<EmployeeModel> response = new ApiResponse<>();
+		try {
+			Optional<EmployeeModel> matchedEmp = employeeRepository.findById(empId);
+			if (matchedEmp.isPresent()) {
+				employeeRepository.deleteById(empId);
+				response.setMessage("Employee deleted successfully");
+				response.setStatus("success");
+			} else {
+				response.setMessage("Employee Not found with" + empId);
+				response.setStatus("success");
+			}
+
+		} catch (Exception e) {
+			response.setMessage("Error while deleting");
+		}
+		return response;
+	}
+
+}

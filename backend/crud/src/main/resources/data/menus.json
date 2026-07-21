@@ -1,0 +1,120 @@
+[
+  {
+    "role": "ADMIN",
+    "menus": [
+      {
+        "menuName": "Dashboard",
+        "icon": "dashboard",
+        "subPages": [
+          {
+            "pageName": "Home",
+            "routingUrl": "/dashboard"
+          }
+        ]
+      },
+      {
+        "menuName": "Employees",
+        "icon": "people",
+        "subPages": [
+          {
+            "pageName": "Employee List",
+            "routingUrl": "/employees"
+          }
+        ]
+      },
+      {
+        "menuName": "Reports",
+        "icon": "assessment",
+        "subPages": [
+          {
+            "pageName": "Salary Report",
+            "routingUrl": "/reports/salary"
+          },
+          {
+            "pageName": "Attendance Report",
+            "routingUrl": "/reports/attendance"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "role": "MANAGER",
+    "menus": [
+      {
+        "menuName": "Dashboard",
+        "icon": "dashboard",
+        "subPages": [
+          {
+            "pageName": "Home",
+            "routingUrl": "/dashboard"
+          }
+        ]
+      },
+      {
+        "menuName": "Employees",
+        "icon": "people",
+        "subPages": [
+          {
+            "pageName": "Employee List",
+            "routingUrl": "/employees"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "role": "HR",
+    "menus": [
+      {
+        "menuName": "Dashboard",
+        "icon": "dashboard",
+        "subPages": [
+          {
+            "pageName": "Home",
+            "routingUrl": "/dashboard"
+          }
+        ]
+      },
+      {
+        "menuName": "Recruitment",
+        "icon": "work",
+        "subPages": [
+          {
+            "pageName": "Candidates",
+            "routingUrl": "/recruitment"
+          },
+          {
+            "pageName": "Interviews",
+            "routingUrl": "/interviews"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "role": "USER",
+    "menus": [
+      {
+        "menuName": "Dashboard",
+        "icon": "dashboard",
+        "subPages": [
+          {
+            "pageName": "Home",
+            "routingUrl": "/dashboard"
+          }
+        ]
+      },
+      {
+        "menuName": "Profile",
+        "icon": "person",
+        "subPages": [
+          {
+            "pageName": "My Profile",
+            "routingUrl": "/profile"
+          }
+        ]
+      }
+    ]
+  }
+]
