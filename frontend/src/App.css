@@ -1,10 +1,9 @@
-
 /* Assign font configuration parameters locally */
 .material-icons {
-  font-family: 'Material Icons';
+  font-family: "Material Icons";
   font-weight: normal;
   font-style: normal;
-  font-size: 24px;  /* Preferred icon size */
+  font-size: 24px; /* Preferred icon size */
   display: inline-block;
   line-height: 1;
   text-transform: none;
@@ -16,4 +15,26 @@
   /* Support for crisp icon rendering on modern displays */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.success-toast {
+  font-weight: 600;
+  font-size: medium;
+  color: green;
+  border-color: green;
+  background-color: rgb(219, 245, 219);
+}
+.error-toast {
+  font-weight: 600;
+  font-size: medium;
+  color: red;
+  border-color: red;
+  background-color: rgb(236, 218, 219);
+}
+.info-toast {
+  font-weight: 600;
+  font-size: medium;
+  color: blue;
+  border-color: blue;
+  background-color: rgb(222, 222, 219);
 }

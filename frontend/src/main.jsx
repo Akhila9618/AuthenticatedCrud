@@ -13,12 +13,15 @@ import {
 import router from "./Router.jsx";
 import "@fontsource/material-icons";
 import "./services/interceptor.js";
-import { AuthProvider } from "./services/AuthContext.jsx";
+import { ToastProvider } from "./services/Contexts/ToasterContext.jsx";
+import { AuthProvider } from "./services/Contexts/AuthContext.jsx";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
   <AuthProvider>
-    <RouterProvider router={router} />
+    <ToastProvider>
+      <RouterProvider router={router} />
+    </ToastProvider>
   </AuthProvider>
-)
+);

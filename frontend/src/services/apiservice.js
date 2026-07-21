@@ -10,6 +10,10 @@ export const login = async (userCredentials) => {
   return res.data;
 };
 
+export const generateToken =async (userCredentials) =>{
+  const res = await api.post("auth/generate-token" ,userCredentials)
+  return res.data;
+}
 export const getAllEmployees = async() => {
   const res =await api.get("employees/fetchAllEmployees");
   return res.data;

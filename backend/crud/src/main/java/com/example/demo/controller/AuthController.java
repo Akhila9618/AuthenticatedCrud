@@ -25,4 +25,9 @@ public class AuthController {
 	public ApiResponse<LoginResponse> login(@Valid @RequestBody LoginRequest loginCredentials) {
 		return authService.executeLogin(loginCredentials);
 	}
+	@PostMapping("/generate-token")
+		public String generateToken(@Valid @RequestBody LoginRequest loginCredentials) {
+			return authService.generateToken(loginCredentials);
+		}
+	
 }
