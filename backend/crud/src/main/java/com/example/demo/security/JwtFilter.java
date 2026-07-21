@@ -11,6 +11,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.example.demo.utility.ApiResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.security.SignatureException;
@@ -27,6 +30,9 @@ public class JwtFilter extends OncePerRequestFilter {
 	@Autowired
 	JwtUtil jwtUtil;
 
+	@Autowired
+	private ObjectMapper objectMapper;
+
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
@@ -36,35 +42,49 @@ public class JwtFilter extends OncePerRequestFilter {
 //			token extraction
 			String token = authHeader.substring(7);
 			try {
-				
+
 				String role = jwtUtil.extractRole(token);
-				List<GrantedAuthority>
-				authorities =
-				List.of(
-				        new SimpleGrantedAuthority(
-				                "ROLE_" + role)
-				);
-				//utility  validates token and return username if token is expired then throws exception
+				List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_" + role));
+				// utility validates token and return username if token is expired then throws
+				// exception
 				String userName = jwtUtil.extractUserName(token);
 				UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userName,
-						null,authorities);
+						null, authorities);
 
 				SecurityContextHolder.getContext().setAuthentication(authentication);
 			} catch (ExpiredJwtException e) {
-				response.setStatus(401);
-				response.getWriter().write("JWT Expired. Please login again");
+
+				ApiResponse<Object> responseObj = new ApiResponse<>("FAILED", "JWT Expired. Please login again", null);
+
+				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+
+				response.setContentType("application/json");
+
+				response.getWriter().write(objectMapper.writeValueAsString(responseObj));
+
 				return;
 			}
 
 			catch (SignatureException e) {
-				response.setStatus(401);
-				response.getWriter().write("Signature error");
+				ApiResponse<Object> responseObj = new ApiResponse<>("FAILED", "Signature error", null);
+
+				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+
+				response.setContentType("application/json");
+
+				response.getWriter().write(objectMapper.writeValueAsString(responseObj));
 				return;
 			}
 
 			catch (MalformedJwtException e) {
-				response.setStatus(401);
-				response.getWriter().write("Malformed token.Please check once.");
+				ApiResponse<Object> responseObj = new ApiResponse<>("FAILED", "Malformed token.Please check once.",
+						null);
+
+				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+
+				response.setContentType("application/json");
+
+				response.getWriter().write(objectMapper.writeValueAsString(responseObj));
 				return;
 			}
 

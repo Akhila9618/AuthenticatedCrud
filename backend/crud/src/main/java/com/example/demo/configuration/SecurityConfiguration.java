@@ -31,37 +31,24 @@ public class SecurityConfiguration {
 	private JwtFilter jwtFilter;
 
 	@Bean
-	public SecurityFilterChain security(
-	        HttpSecurity http)
-	        throws Exception {
+	public SecurityFilterChain security(HttpSecurity http) throws Exception {
 
-		
 //		CSRF (Cross-Site Request Forgery)
-	    return http
-	    		// this is used because spring security overrides CORS settings.
-	    		.cors(cors -> {})
-	            .csrf(csrf -> csrf.disable())
-	            //used to create sessions for every user and later server forgets user
-	            // this is stateless
-	            .sessionManagement(sm ->
-	                    sm.sessionCreationPolicy(
-	                            SessionCreationPolicy
-	                                    .STATELESS))
-	            
-	            .authorizeHttpRequests(auth ->
-	                    auth
-	                    .requestMatchers(
-	                            "/auth/login")
-	                    .permitAll()
+		return http
+				// this is used because spring security overrides CORS settings.
+				.cors(cors -> {
+				}).csrf(csrf -> csrf.disable())
+				// used to create sessions for every user and later server forgets user
+				// this is stateless
+				.sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-	                    .anyRequest()
-	                    .authenticated())
-	            //indicates where to include jwtFilter in the built in sequential pipeline
-	            .addFilterBefore(
-	                    jwtFilter,
-	                    UsernamePasswordAuthenticationFilter.class)
+				.authorizeHttpRequests(auth -> auth.requestMatchers("/auth/login", "/auth/generate-token").permitAll()
 
-	            .build();
+						.anyRequest().authenticated())
+				// indicates where to include jwtFilter in the built in sequential pipeline
+				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+
+				.build();
 	}
 
 //	@Bean
@@ -76,20 +63,19 @@ public class SecurityConfiguration {
 //		source.registerCorsConfiguration("/**", corsConfig);
 //		return source;
 //	}
-	
+
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
-	    CorsConfiguration configuration = new CorsConfiguration();
-	    configuration.setAllowedOriginPatterns(List.of("*"));
-	    configuration.setAllowedMethods(List.of("*"));
-	    configuration.setAllowedHeaders(List.of("*"));
-	    configuration.setAllowCredentials(false);
+		CorsConfiguration configuration = new CorsConfiguration();
+		configuration.setAllowedOriginPatterns(List.of("*"));
+		configuration.setAllowedMethods(List.of("*"));
+		configuration.setAllowedHeaders(List.of("*"));
+		configuration.setAllowCredentials(false);
 
-	    UrlBasedCorsConfigurationSource source =
-	            new UrlBasedCorsConfigurationSource();
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 
-	    source.registerCorsConfiguration("/**", configuration);
-	    return source;
+		source.registerCorsConfiguration("/**", configuration);
+		return source;
 	}
-	
+
 }

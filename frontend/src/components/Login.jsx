@@ -8,14 +8,16 @@ import {
   InputGroup,
   Row,
 } from "react-bootstrap";
-import { login } from "../services/apiservice";
+import { generateToken, login } from "../services/apiservice";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../services/AuthContext";
+import { useAuth } from "../services/Contexts/AuthContext";
+import { useToast } from "../services/Contexts/ToasterContext";
 
 function Login() {
   const navigation = useNavigate();
   // renaming while destructuring
   const { login: loginAuth } = useAuth();
+  const { showToast, hideToast } = useToast();
   const [showPassword, setShowPassword] = useState(false);
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -24,37 +26,32 @@ function Login() {
     try {
       const loginResponse = await login(payload);
       if (loginResponse && loginResponse.status === "success") {
-        loginAuth(loginResponse.data);
-        navigation("/");
-        console.log("afterlogin");
+        tokenGeneration(payload , loginResponse.data);
       } else {
-        alert(loginResponse.message);
+        showToast(
+          loginResponse.message || "An Error Occured during login",
+          "error",
+        );
       }
     } catch (error) {
-      console.error(error);
+      showToast(error.message || "An Error Occured during login", "error");
     }
   };
-  // const handleLogin = async (e) => {
-  //   e.preventDefault();
-  //   const formData = new FormData(e.target);
-  //   const payload = Object.fromEntries(formData);
-  //   try {
-  //     const loginResponse = await login(payload);
-  //     if (loginResponse && loginResponse.status === "success") {
-  //       localStorage.setItem(
-  //         "loggedInUser",
-  //         JSON.stringify(loginResponse.data),
-  //       );
-  //       console.log("login");
-  //       navigation("/");
-  //       console.log("afterlogin");
-  //     } else {
-  //       alert(loginResponse.message);
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
+  const tokenGeneration = async (userCredentials , loginResponse) => {
+    try {
+      const res = await generateToken(userCredentials);
+      if (res) {
+        const updatedResponse = {...loginResponse , token :res}
+        loginAuth(updatedResponse);
+        navigation("/");
+      } else {
+        showToast("Error while generating token");
+      }
+    } catch (error) {
+       showToast(error.message|| error.msg || "An Error Occured during login", "error");
+    }
+  };
+  
 
   return (
     // <div className="login-container">
@@ -111,10 +108,10 @@ function Login() {
                     required
                   />
                 </Form.Group> */}
-                <Form.Label>Password</Form.Label> 
+                <Form.Label>Password</Form.Label>
                 <InputGroup className="mb-4">
                   <Form.Control
-                    type={showPassword ? "text":"password"}
+                    type={showPassword ? "text" : "password"}
                     name="password"
                     placeholder="Enter password"
                     required

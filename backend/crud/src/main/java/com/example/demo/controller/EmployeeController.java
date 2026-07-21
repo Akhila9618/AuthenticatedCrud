@@ -16,9 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.request.EmployeeRequest;
-import com.example.demo.dto.request.LoginRequest;
 import com.example.demo.dto.response.EmployeeResponse;
-import com.example.demo.dto.response.LoginResponse;
 import com.example.demo.service.EmployeeService;
 import com.example.demo.utility.ApiResponse;
 
@@ -49,17 +47,12 @@ public class EmployeeController {
 	
 	@PutMapping("/updateEmployee")
 	public ResponseEntity<ApiResponse<EmployeeResponse>> updateEmp(@RequestBody EmployeeRequest user){
-		return ResponseEntity.ok(employeeService.fetchEmployee(user));
+		return ResponseEntity.ok(employeeService.updateEmployee(user));
 	}
 	
 	@DeleteMapping("/deleteEmployee/{id}")
 	public ApiResponse<Map<String,String>> deleteEmployee(@PathVariable Integer id){
 		return employeeService.deleteEmployee(id);
-	}
-	
-	@PostMapping("/login")
-	public ApiResponse<LoginResponse> validateLogin(@Valid @RequestBody LoginRequest credentials){
-		return employeeService.validateLogin(credentials);
 	}
 
 

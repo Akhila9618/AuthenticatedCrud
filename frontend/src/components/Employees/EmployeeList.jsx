@@ -5,6 +5,7 @@ import {
   saveNewEmp,
   updateEmp,
 } from "../../services/apiservice";
+import { useToast } from "../../services/Contexts/ToasterContext";
 
 function EmployeeList() {
   const [employees, setEmployees] = useState([]);
@@ -41,9 +42,10 @@ function EmployeeList() {
       [e.target?.name]: e.target.value,
     });
   };
+  const { showToast, hideToast } = useToast();
+
   const saveNewUser = async () => {
     try {
-      console.log("emp", employee);
       let apiRes;
       if (saveType === "edit") {
         apiRes = await updateEmp(employee);
@@ -51,16 +53,16 @@ function EmployeeList() {
         apiRes = await saveNewEmp(employee);
       }
       if (apiRes && apiRes.status === "success") {
-        console.log(apiRes.message || "Employee saved successfully");
+        showToast(apiRes.message || "Employee saved successfully", "success");
         setShowModal(false);
         setTouched(touchedInitialState);
         setEmployee(formInitialState);
         fetchEmp();
       } else {
-        console.log(res.message || "An Error Occured");
+        showToast(apiRes.message || "An Error Occured", "error");
       }
     } catch (error) {
-      console.log(error.message || error.msg);
+      showToast(apiRes.message || error.msg || "An Error Occured", "error");
     }
   };
 
@@ -68,19 +70,29 @@ function EmployeeList() {
     try {
       const employeeRes = await getAllEmployees();
       setEmployees(employeeRes.data.empList);
-      if (employeeRes.data && employeeRes.data?.empList.length > 0) {
-        const headersList = [
-          "Action",
-          ...Object.keys(employeeRes.data.empList[0]),
-        ];
-        const filteredHeaders = headersList.filter(
-          (header) => !["password", "emplId"].includes(header),
+      if (employeeRes.status === "success") {
+        if (employeeRes.data && employeeRes.data?.empList.length > 0) {
+          const headersList = [
+            "Action",
+            ...Object.keys(employeeRes.data.empList[0]),
+          ];
+          const filteredHeaders = headersList.filter(
+            (header) => !["password", "emplId"].includes(header),
+          );
+          setTableHeadrs(filteredHeaders);
+          setRoles(employeeRes?.data?.rolesList);
+        }
+      } else {
+        showToast(
+          apiRes.message || "An error occured while fetching users data.",
+          "error",
         );
-        setTableHeadrs(filteredHeaders);
-        setRoles(employeeRes?.data?.rolesList);
       }
     } catch (error) {
-      console.log(error);
+      showToast(
+        error.msg || "An error occured while fetching users data.",
+        "error",
+      );
     }
   };
   const handleFormTouch = (e) => {
@@ -96,7 +108,6 @@ function EmployeeList() {
     return value ? "is-valid" : "is-invalid";
   };
   const openForm = (openType, data = {}) => {
-    console.log(data);
     setOpenType(openType);
     setTouched(touchedInitialState);
     if (openType !== "edit") {
@@ -121,13 +132,14 @@ function EmployeeList() {
       const res = await deleteEmp(empRow.emplId);
       if (res) {
         if (res.status === "success") {
+          showToast(res.message || "User deleted successfully", "success");
           fetchEmp();
         } else {
-          console.log(res.message || "An Error Occured");
+          showToast(res.message || "An Error Occured while deleting", "error");
         }
       }
     } catch (error) {
-      console.log(error.msg);
+      showToast(error.msg || "An Error Occured while deleting ", "error");
     }
   };
 
