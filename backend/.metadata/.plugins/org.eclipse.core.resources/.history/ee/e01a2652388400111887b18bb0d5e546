@@ -1,0 +1,40 @@
+spring.application.name=crud
+server.servlet.context-path=/employee
+# H2 Database Configuration
+#spring.datasource.url=jdbc:h2:mem:testdb
+#spring.datasource.driver-class-name=org.h2.Driver
+#spring.datasource.username=sa
+#spring.datasource.password=
+
+# JPA/Hibernate Configuration
+#spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+#spring.jpa.hibernate.ddl-auto=update
+#spring.jpa.show-sql=true
+#spring.jpa.properties.hibernate.format_sql=true
+
+# Enable H2 Console
+#spring.h2.console.enabled=true
+#spring.h2.console.path=/h2-console
+#
+#logging.root.level=INFO
+
+#database connection
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+
+#to get logs related to sql
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+
+
+spring.datasource.url=jdbc:mysql://localhost:3306/practice
+spring.datasource.username=root
+spring.datasource.password=root
+
+#hibernate to handle inital table and data related 
+spring.jpa.hibernate.ddl-auto=create
+spring.jpa.defer-datasource-initialization=true
+spring.sql.init.mode=always
+
+folderPath=D:/complete projects/CRUD
+secretKey = "mysecretkeymysecretkey123456789"
+tokenExpiryTime = 6000

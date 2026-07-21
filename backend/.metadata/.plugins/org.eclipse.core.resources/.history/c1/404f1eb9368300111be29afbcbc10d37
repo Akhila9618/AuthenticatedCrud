@@ -1,0 +1,22 @@
+package com.example.demo.repository;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+import com.example.demo.dto.db.EmployeeModel;
+
+@Repository
+public interface EmployeeRepository extends JpaRepository<EmployeeModel, Integer> {
+
+	Optional<EmployeeModel> findByEmpName(String empName);
+
+//	@Query(value = "select distinct r.role_name from roles r ",nativeQuery=true)
+	@Query("select distinct r.roleName from Roles r ")
+	List<String> distinctRoles();
+
+}
+

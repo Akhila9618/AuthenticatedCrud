@@ -1,0 +1,47 @@
+[
+  {
+    "emplId": 1,
+    "empName": "admin",
+    "empSalary": 75000,
+    "empAddress": "Hyderabad",
+    "userName": "admin",
+    "password": "admin123",
+    "role": "ADMIN"
+  },
+  {
+    "emplId": 2,
+    "empName": "Jane Smith",
+    "empSalary": 65000,
+    "empAddress": "Bengaluru",
+    "userName": "jane",
+    "password": "jane123",
+    "role": "MANAGER"
+  },
+  {
+    "emplId": 3,
+    "empName": "Ram Kumar",
+    "empSalary": 55000,
+    "empAddress": "Chennai",
+    "userName": "ram",
+    "password": "ram123",
+    "role": "USER"
+  },
+  {
+    "emplId": 4,
+    "empName": "Sita Devi",
+    "empSalary": 60000,
+    "empAddress": "Vijayawada",
+    "userName": "sita",
+    "password": "sita123",
+    "role": "HR"
+  },
+  {
+    "emplId": 5,
+    "empName": "Ravi Teja",
+    "empSalary": 85000,
+    "empAddress": "Pune",
+    "userName": "ravi",
+    "password": "ravi123",
+    "role": "ADMIN"
+  }
+]

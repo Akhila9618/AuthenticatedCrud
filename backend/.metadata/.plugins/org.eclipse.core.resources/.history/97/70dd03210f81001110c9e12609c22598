@@ -1,0 +1,39 @@
+package com.example.demo.repository;
+
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.model.EmployeeModel;
+import com.example.demo.model.LoginRequest;
+import com.example.demo.utility.ApiResponse;
+
+@Service
+public class AuthService {
+	@Autowired
+	private EmployeeRepository employeeRepository;
+	private final PasswordEncoder passwordEncoder = null;
+
+	public ApiResponse<Map<String, String>> executeLogin(LoginRequest loginCredentials) {
+		ApiResponse<Map<String, String>> response = new ApiResponse<>();
+
+		EmployeeModel emp = employeeRepository.findByEmpName(loginCredentials.getUserName())
+				.orElseThrow(() -> new IllegalArgumentException("UserName is requiered"));
+		if (loginCredentials.getPassword() != null || loginCredentials.getPassword().isBlank()) {
+			response.setStatus("failed");
+			response.setMessage("password is required");
+		} else {
+
+			boolean valid = passwordEncoder.matches(passwordEncoder.encode(loginCredentials.getPassword()),
+					emp.getPassword());
+			if (valid) {
+				response.setMessage("Login Successful");
+				response.setStatus("success");
+			}
+		}
+		return response;
+	}
+
+}

@@ -1,0 +1,18 @@
+package com.example.demo.util;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+import com.example.demo.dto.request.LoginRequest;
+
+@Component
+public class JwtUtil {
+
+	@Value("${secretKey}")
+	private String secretKey;
+	
+	public String generateToken(LoginRequest loginCredentials) {
+		
+	}
+
+}

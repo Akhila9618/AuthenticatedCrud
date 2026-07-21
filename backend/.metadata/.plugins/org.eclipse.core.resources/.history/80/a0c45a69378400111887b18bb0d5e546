@@ -1,0 +1,68 @@
+package com.example.demo.security;
+
+import java.util.Date;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+import com.example.demo.dto.request.LoginRequest;
+import com.example.demo.repository.EmployeeRepository;
+
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
+
+@Component
+public class JwtUtil {
+
+	@Value("${secretKey}")
+	private String secretKey;
+
+	@Value("${tokenExpiryTime}")
+	private int tokenExpiryTime;
+
+	@Autowired
+	private EmployeeRepository employeeRepository;
+
+//	 .subject(value)  this overrides the subject 
+//	menas if we use like .subject(userName).subject(roleName) then token only contains roleName
+	public String generateToken(LoginRequest loginCredentials, String role) {
+		String uesrName = loginCredentials.getUserName();
+
+//		Jwts.builder() --- creates empty token
+//		subject --- what the data the token should have  subject is a single field 
+//								
+//		       if we want multiple fields then use claims  ex:  subject("admin")
+//		    	   												claims.put("role","ADMIN");
+//																claims.put("id",10);
+//		
+
+		String token = Jwts.builder().subject(uesrName).claim("role", role).issuedAt(new Date())
+				.expiration(new Date(System.currentTimeMillis() + tokenExpiryTime))
+				.signWith(Keys.hmacShaKeyFor(secretKey.getBytes())).compact();
+		return token;
+	}
+
+	public String extractUserName(String token) {
+//		Jwts.parser() --- starts reading jwt
+//		parseSignedClaims --- extracts header, payload
+
+		return Jwts.parser().verifyWith(Keys.hmacShaKeyFor(secretKey.getBytes())).build().parseSignedClaims(token)
+				.getPayload().getSubject();
+	}
+
+	public boolean isTokenValid(String token) {
+
+		try {
+
+			extractUserName(token);
+
+			return true;
+
+		} catch (Exception e) {
+
+			return false;
+		}
+	}
+
+}
